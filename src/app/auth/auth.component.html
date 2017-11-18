@@ -1,0 +1,19 @@
+<button (click)="auth.googleLogin()">Sign in woth Google</button>
+<button (click)="auth.logout()">Logout</button>
+
+<div *ngIf="auth.user | async as user">
+  <p>{{user?.uid}}</p>
+</div>
+
+<form #loginForm="ngForm" (ngSubmit)="auth.emailLogin(loginData);loginForm.reset()" novalidate>
+  <input type="email" placeholder="email" [(ngModel)]="loginData.email" name="email">
+  <input type="password" placeholder="password" [(ngModel)]="loginData.password" name="password">
+  <button type="submit">Login</button>
+</form>
+
+<!--<form #signUpForm="ngForm"  novalidate>
+  <input type="text" placeholder="Your name" [(ngModel)]="registerCredentials.name">
+  <input type="email" placeholder="email" [(ngModel)]="registerCredentials.email">
+  <input type="password" placeholder="password" [(ngModel)]="registerCredentials.password">
+  <button type="submit">Register</button>
+</form>-->
