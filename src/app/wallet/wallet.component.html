@@ -1,3 +1,17 @@
 <div *ngIf="walletData | async as wallet">
+  <h1>{{wallet.balance | currency:wallet.currency}}</h1>
   <p (click)="data.addTransaction(this.id,wallet.balance,true,'test')">{{wallet.name}}</p>
+
+<form [formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(wallet.balance)">
+  <input type="number" formControlName="sum">
+  <input type="text" formControlName="name">
+  <input type="checkbox" formControlName="isIncome">
+  <select>
+    <option *ngFor="let category of data.categoryCollection | async">{{category.name}}</option>
+  </select>
+  <button type="submit">submit</button>
+</form>
+
+<p>{{transactionForm.value | json}}</p>
+<p>{{transactionForm.value.sum * transactionForm.value.isIncome}}</p>
 </div>

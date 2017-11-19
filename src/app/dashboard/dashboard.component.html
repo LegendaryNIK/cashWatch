@@ -2,11 +2,14 @@
   &ndash;&gt;
 </mat-sidenav-container>-->
 
-<mat-sidenav-container #sidenav>
-  <mat-sidenav mode="side">
+
+
+<mat-sidenav-container >
+  <mat-toolbar color="primary"> <span class="fa fa-bars" (click)="sidenav.toggle()"></span></mat-toolbar>
+  <mat-sidenav mode="side" #sidenav mode="push">
     <mat-nav-list>
       <mat-card *ngFor="let wallet of data.wallets | async" >
-        <a [routerLink]="[wallet.id]">
+        <a [routerLink]="[wallet.id]" (click)="sidenav.toggle()">
         <mat-card-title>{{wallet.name}}</mat-card-title></a>
         <mat-card-subtitle>{{wallet.balance}}</mat-card-subtitle>
       </mat-card>
@@ -25,7 +28,7 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <button (click)="sidenav.open()">test</button>
+  <button (click)="sidenav.toggle()">test</button>
   <router-outlet></router-outlet>
 
 </mat-sidenav-container>

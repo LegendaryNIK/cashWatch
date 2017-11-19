@@ -1,22 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from './app-routing.module';
+
+import { CoreModule } from "./core/core.module";
+import { UiComponentsModule } from "./ui-components.module";
+
 import { AppComponent } from './app.component';
 
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import {
-  MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatSidenavModule,
-  MatToolbarModule
-} from '@angular/material';
 import { AuthComponent } from './auth/auth.component';
 import { AngularFireModule } from 'angularfire2';
-import { environment } from '../environments/environment';
-import {CoreModule} from "./core/core.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { environment } from '../environments/environment';
 import { UserDataService } from './providers/user-data.service';
 import { WalletComponent } from './wallet/wallet.component';
+
 
 @NgModule({
   declarations: [
@@ -33,12 +32,7 @@ import { WalletComponent } from './wallet/wallet.component';
     CoreModule,
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatListModule,
+    UiComponentsModule
   ],
   providers: [UserDataService],
   bootstrap: [AppComponent]

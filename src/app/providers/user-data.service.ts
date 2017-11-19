@@ -17,9 +17,12 @@ export class UserDataService {
   user: any;
   walletsCollection: any;
   wallets: any;
+  categoryCollection: any;
 
   constructor(private auth: AuthService, private afs: AngularFirestore) {
     this.walletsCollection = this.afs.doc(`users/${this.auth.uid}`).collection('wallets');
+    this.categoryCollection = this.afs.collection('categories').valueChanges();
+
     this.wallets = this.walletsCollection.snapshotChanges().map(wallet => {
       return wallet.map(w => {
         const data = w.payload.doc.data();
@@ -37,10 +40,16 @@ export class UserDataService {
     return this.walletsCollection.doc(id).valueChanges();
   }
 
-  addTransaction(id, sum: number, isIncome: boolean, category: string) {
-    const data = { sum: sum, category: category};
+  addTransaction(id, oldBal: number, params: any) {
+    const data = params;
     const transCollection = this.walletsCollection.doc(id).collection('transactions');
+    this.updateBalance(oldBal, params.sum, id);
     return transCollection.add(data);
+  }
+
+  updateBalance (oldBal: number, sum: number, id: number) {
+    const balance = oldBal + sum;
+    return this.walletsCollection.doc(id).update({balance: balance});
   }
 }
 
