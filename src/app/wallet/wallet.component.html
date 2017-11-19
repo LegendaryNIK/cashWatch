@@ -1,0 +1,3 @@
+<div *ngIf="walletData | async as wallet">
+  <p (click)="data.addTransaction(this.id,wallet.balance,true,'test')">{{wallet.name}}</p>
+</div>

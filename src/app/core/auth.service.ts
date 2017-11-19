@@ -10,20 +10,21 @@ import 'rxjs/add/operator/switchMap';
 interface User {
   uid: string;
   name: string;
-  wallet_ids?: Array<string>;
+  wallets?: Array<any>;
 }
 
 @Injectable()
 export class AuthService {
 
   user: Observable<User>;
+  uid: string;
+  wallets: Array<string>;
 
   constructor( private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     this.user = this.afAuth.authState
       .switchMap(user => {
-        console.log(user);
         if (user) {
-          this.afs.doc(`users/${user.uid}`).valueChanges().subscribe(success => console.log(success));
+          this.uid = user.uid;
           return this.afs.doc(`users/${user.uid}`).valueChanges();
         } else {
           return Observable.of(null);
@@ -52,8 +53,8 @@ export class AuthService {
 
   private updateUserData(userData) {
     const UserRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${userData.uid}`);
-    UserRef.valueChanges().subscribe(userData => {
-      if (!userData) {
+    UserRef.valueChanges().subscribe(storedUser => {
+      if (!storedUser) {
         const data: User = {
           uid: userData.uid,
           name: userData.displayName
