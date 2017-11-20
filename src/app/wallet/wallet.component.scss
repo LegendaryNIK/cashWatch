@@ -1,0 +1,45 @@
+@keyframes init {
+  0% {
+    transform: translateY(+25%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.card{
+  width: 50%;
+  margin: 1rem;
+  animation: init .5s ease-out 0s 1;
+}
+
+.card-form{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  input, mat-select{
+    width: 48%;
+    margin-top: 20px;
+    font-size: 15px;
+  }
+  input{
+    border: none;
+    border-bottom: 1px solid #000;
+    transition: .3s ease;
+    &:focus{
+      outline: none;
+      border-bottom: 1px solid #ccb40e;
+    }
+  }
+  button{
+    margin-top: 20px;
+    width: 100%;
+    font-size: 15px;
+    background: #caa;
+    padding: 10px 0;
+    border: none;
+    text-transform: uppercase;
+  }
+}

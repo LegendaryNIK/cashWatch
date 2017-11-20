@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from "angularfire2/auth";
 import { AngularFirestore, AngularFirestoreDocument } from "angularfire2/firestore";
+import { Router } from "@angular/router";
 import * as firebase from "firebase/app";
 
 import { Observable } from "rxjs/Observable";
@@ -20,7 +21,7 @@ export class AuthService {
   uid: string;
   wallets: Array<string>;
 
-  constructor( private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+  constructor( private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {
     this.user = this.afAuth.authState
       .switchMap(user => {
         if (user) {
@@ -48,6 +49,7 @@ export class AuthService {
       .then(loginData => {
         console.log(loginData);
         this.updateUserData(loginData.user);
+        this.router.navigate(['/dashboard']);
       });
   }
 
@@ -67,6 +69,7 @@ export class AuthService {
   logout() {
     this.afAuth.auth.signOut()
       .then(() => {
+      this.router.navigate(['/login']);
       console.log('signed out');
       });
   }

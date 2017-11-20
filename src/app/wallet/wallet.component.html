@@ -1,17 +1,46 @@
+<div class="background"></div>
 <div *ngIf="walletData | async as wallet">
-  <h1>{{wallet.balance | currency:wallet.currency}}</h1>
-  <p (click)="data.addTransaction(this.id,wallet.balance,true,'test')">{{wallet.name}}</p>
+  <mat-card class="card">
+    <mat-card-title>{{wallet.name}} balance: {{wallet.balance | currency:wallet.currency}}</mat-card-title>
+  </mat-card>
+  <mat-card class="card">
+    <mat-card-title>Add new transaction</mat-card-title>
+    <form class="card-form"[formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(wallet.balance); transactionForm.reset()">
+      <input type="number" formControlName="sum" placeholder="Amount">
+      <input type="text" formControlName="name" placeholder="Name">
+      <mat-select formControlName="isIncome">
+        <mat-option [value]="false">Expence</mat-option>
+        <mat-option [value]="true">Income</mat-option>
+      </mat-select>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+      </mat-select>
+      <button type="submit">Add</button>
+    </form>
+  </mat-card>
+  <mat-card class="card" *ngIf='history.length'>
+      <canvas baseChart
+              [data]="chartData"
+              [labels]="categories"
+              [chartType]="'doughnut'"
+              ></canvas>
+  </mat-card>
+  <mat-card class="card">
+    <mat-card-title>Your recent transactions</mat-card-title>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Balance change</th>
+        <th>Category</th>
+        <th>Date</th>
+      </tr>
+      <tr *ngFor="let trans of history">
+        <td>{{trans.name}}</td>
+        <td>{{trans.sum}}</td>
+        <td>{{trans.category}}</td>
+        <td>{{trans.dateTime | date:'mediumDate'}}</td>
+      </tr>
 
-<form [formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(wallet.balance)">
-  <input type="number" formControlName="sum">
-  <input type="text" formControlName="name">
-  <input type="checkbox" formControlName="isIncome">
-  <select>
-    <option *ngFor="let category of data.categoryCollection | async">{{category.name}}</option>
-  </select>
-  <button type="submit">submit</button>
-</form>
-
-<p>{{transactionForm.value | json}}</p>
-<p>{{transactionForm.value.sum * transactionForm.value.isIncome}}</p>
+    </table>
+  </mat-card>
 </div>

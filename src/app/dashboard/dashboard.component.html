@@ -1,35 +1,33 @@
-<!--<mat-sidenav-container #sidenav opened="true" mode="push">
-  &ndash;&gt;
-</mat-sidenav-container>-->
-
-
-
 <mat-sidenav-container >
-  <mat-toolbar color="primary"> <span class="fa fa-bars" (click)="sidenav.toggle()"></span></mat-toolbar>
+  <mat-toolbar color="primary">
+    <span class="fa fa-bars" (click)="sidenav.toggle()"></span>
+    <span class="spacer"></span>
+    Hello, {{userName}}
+    <button class="exit-btn" aria-label="Sign out" (click)="auth.logout()"><span class="fa fa-sign-out" aria-hidden="true"></span></button>
+  </mat-toolbar>
   <mat-sidenav mode="side" #sidenav mode="push">
     <mat-nav-list>
-      <mat-card *ngFor="let wallet of data.wallets | async" >
+      <div class="wallet" *ngFor="let wallet of data.wallets | async">
         <a [routerLink]="[wallet.id]" (click)="sidenav.toggle()">
-        <mat-card-title>{{wallet.name}}</mat-card-title></a>
-        <mat-card-subtitle>{{wallet.balance}}</mat-card-subtitle>
-      </mat-card>
-      <mat-card>
-        <form [formGroup]="newWalletForm" novalidate (ngSubmit)="data.addWallet(newWalletForm.value)">
-          <input type="text" formControlName="name">
-          <input type="number" formControlName="balance">
-          <select formControlName="currency">
-            <option [value]="'UAH'">UAH</option>
-            <option [value]="'USD'">USD</option>
-          </select>
-          <button type="submit">Add wallet</button>
+          <h1>{{wallet.name}}</h1>
+          <h2>Balance: {{wallet.balance | currency:wallet.currency}}</h2>
+        </a>
+        <button class="wallet-button" (click)="data.deleteWallet(wallet.id)" aria-label="Delete wallet"><span class="fa fa-trash" aria-hidden="true"></span></button>
+      </div>
+      <div class="wallet">
+        <form [formGroup]="newWalletForm" novalidate (ngSubmit)="addNewWallet(); sidenav.toggle()">
+          <input type="text" formControlName="name" name="walletName" placeholder="Wallet">
+          <input type="number" formControlName="balance" name="walletBalance" placeholder="Balance" min="0">
+          <mat-select class="currency-select"formControlName="currency" name="walletCurrency">
+            <mat-option [value]="'USD'">USD</mat-option>
+            <mat-option [value]="'EUR'">EUR</mat-option>
+            <mat-option [value]="'UAH'">UAH</mat-option>
+          </mat-select>
+          <button class="wallet-button" type="submit" [disabled]="!newWalletForm.valid"><span class="fa fa-plus"></span></button>
         </form>
-      </mat-card>
-
+      </div>
     </mat-nav-list>
   </mat-sidenav>
-
-  <button (click)="sidenav.toggle()">test</button>
   <router-outlet></router-outlet>
-
 </mat-sidenav-container>
 

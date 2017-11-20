@@ -36,20 +36,45 @@ export class UserDataService {
     return this.walletsCollection.add(data);
   }
 
+  deleteWallet(id: string){
+    return this.walletsCollection.doc(id).delete();
+  }
+
   selectWallet(id) {
     return this.walletsCollection.doc(id).valueChanges();
   }
 
   addTransaction(id, oldBal: number, params: any) {
     const data = params;
+    data['dateTime'] = new Date();
     const transCollection = this.walletsCollection.doc(id).collection('transactions');
     this.updateBalance(oldBal, params.sum, id);
     return transCollection.add(data);
   }
 
-  updateBalance (oldBal: number, sum: number, id: number) {
+  updateBalance (oldBal: number, sum: number, id: string) {
     const balance = oldBal + sum;
     return this.walletsCollection.doc(id).update({balance: balance});
+  }
+
+  getAllTransactions(id: string) {
+
+  }
+
+  queryTransactions(id: string, params?: any) {
+    let transCollection;
+    const ref = this.walletsCollection.doc(id);
+    if (params && params.isIncome) {
+      transCollection = ref.collection('transactions', trans => trans.where('isIncome', '==', params.isIncome));
+    }
+    else if (params && params.category) {
+      transCollection = ref.collection('transactions', trans => trans.where('category', '==', params.category));
+    }
+    else {
+      transCollection = ref.collection('transactions', trans => trans.orderBy('dateTime', 'desc'));
+    }
+    console.log(transCollection);
+    return transCollection.valueChanges();
   }
 }
 

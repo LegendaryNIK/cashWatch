@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule,
   MatCardModule,
-  MatIconModule,
-  MatListModule,
-  MatSidenavModule,
+  MatIconModule, MatInputModule,
+  MatListModule, MatSelectModule,
+  MatSidenavModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
@@ -23,6 +23,9 @@ import { ChartsModule } from 'ng2-charts';
     MatToolbarModule,
     MatCardModule,
     MatListModule,
+    MatSelectModule,
+    MatInputModule,
+    MatTableModule
   ]
 })
 export class UiComponentsModule {
