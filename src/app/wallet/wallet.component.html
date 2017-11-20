@@ -1,42 +1,43 @@
 <div class="background"></div>
-<div *ngIf="walletData | async as wallet">
-  <mat-card class="card">
+<div class="cards-container" *ngIf="walletData | async as wallet">
+  <mat-card class="card col-md-5 col-xs-12">
     <mat-card-title>{{wallet.name}} balance: {{wallet.balance | currency:wallet.currency}}</mat-card-title>
   </mat-card>
-  <mat-card class="card">
+  <mat-card class="card col-md-5 col-xs-12" *ngIf='history.length'>
+  <canvas baseChart
+          [data]="chartData"
+          [labels]="categories"
+          [chartType]="'doughnut'"
+  ></canvas>
+</mat-card>
+  <mat-card class="card col-md-5 col-xs-12">
     <mat-card-title>Add new transaction</mat-card-title>
-    <form class="card-form"[formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(wallet.balance); transactionForm.reset()">
+    <form class="card-form"[formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(wallet.balance);">
       <input type="number" formControlName="sum" placeholder="Amount">
       <input type="text" formControlName="name" placeholder="Name">
       <mat-select formControlName="isIncome">
-        <mat-option [value]="false">Expence</mat-option>
+        <mat-option [value]="false">Expense</mat-option>
         <mat-option [value]="true">Income</mat-option>
       </mat-select>
-      <mat-select formControlName="category">
+      <mat-select [disabled]="transactionForm.value.isIncome" formControlName="category" placeholder="Category">
+        <mat-option value="">Category</mat-option>
         <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
       </mat-select>
-      <button type="submit">Add</button>
+      <button type="submit" [disabled]="!transactionForm.valid">Add transaction</button>
     </form>
   </mat-card>
-  <mat-card class="card" *ngIf='history.length'>
-      <canvas baseChart
-              [data]="chartData"
-              [labels]="categories"
-              [chartType]="'doughnut'"
-              ></canvas>
-  </mat-card>
-  <mat-card class="card">
+  <mat-card class="card col-md-5 col-xs-12">
     <mat-card-title>Your recent transactions</mat-card-title>
-    <table>
+    <table class="card-table" cellspacing="0">
       <tr>
         <th>Name</th>
         <th>Balance change</th>
         <th>Category</th>
         <th>Date</th>
       </tr>
-      <tr *ngFor="let trans of history">
+      <tr *ngFor="let trans of history | slice:0:9">
         <td>{{trans.name}}</td>
-        <td>{{trans.sum}}</td>
+        <td>{{trans.sum | currency }}</td>
         <td>{{trans.category}}</td>
         <td>{{trans.dateTime | date:'mediumDate'}}</td>
       </tr>

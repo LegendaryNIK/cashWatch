@@ -1,0 +1,8 @@
+@import "~@angular/material/theming";
+@include mat-core();
+$coin-app-primary: mat-palette($mat-deep-orange);
+$coin-app-accent: mat-palette($mat-yellow);
+$coin-app-danger: mat-palette($mat-red);
+$coin-app-theme: mat-light-theme($coin-app-primary, $coin-app-accent, $coin-app-danger);
+
+@include angular-material-theme($coin-app-theme);

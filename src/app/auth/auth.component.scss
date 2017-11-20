@@ -11,8 +11,32 @@
   text-align: center;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: rgba(236, 236, 236, .9);
+  animation: init .5s ease-out 0s 1;
   border-radius: 40px;
+  h1,h2{
+    font-weight: 500;
+  }
 }
 button{
   width: 80%;
+}
+
+@keyframes init {
+  0% {
+    transform: translateY(+25%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 360px){
+  h1{
+    font-size:20px;
+  }
+  h2{
+    font-size: 15px;
+  }
 }

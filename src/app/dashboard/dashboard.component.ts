@@ -18,9 +18,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.newWalletForm = this.fb.group({
-      'name': ['', Validators.required],
-      'balance': ['', Validators.required],
-      'currency': ['', Validators.required],
+      'name': ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      'balance': ['', Validators.compose([Validators.required, Validators.max(99999) ])],
+      'currency': ['UAH', Validators.required]
     });
     this.auth.user.take(1).subscribe(success => this.userName = success.name);
     this.data.wallets.take(1).subscribe(wallets => {

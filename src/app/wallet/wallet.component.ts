@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import {UserDataService} from "../providers/user-data.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
 
 @Component({
   selector: 'app-wallet',
@@ -31,9 +31,9 @@ export class WalletComponent implements OnInit {
 
   ngOnInit() {
     this.transactionForm = this.fb.group({
-      'sum': '',
+      'sum': ['', Validators.compose([Validators.required, Validators.min(0.1)])],
       'isIncome': false,
-      'name': '',
+      'name': ['', Validators.maxLength(20)],
       'category': '',
     });
     this.router.params.subscribe(() => {
@@ -43,9 +43,17 @@ export class WalletComponent implements OnInit {
   }
 
   addTransaction(oldBal: number) {
+    const values = this.transactionForm.value;
     console.log(this.transactionForm.value.isIncome);
-    if (!this.transactionForm.value.isIncome) this.transactionForm.value.sum *= -1;
-    return this.data.addTransaction(this.id, oldBal, this.transactionForm.value);
+    if (!values.isIncome) {
+      values.sum *= -1;
+      if (values.category === '') {values.category = 'Misc'}
+    }
+    else {
+      values.category = 'Income';
+    }
+    this.data.addTransaction(this.id, oldBal, values);
+    this.transactionForm.reset({isIncome: false, category:''})
   }
 
   getHistory() {
@@ -58,18 +66,17 @@ export class WalletComponent implements OnInit {
   }
 
   getChartData() {
-    this.getSpendings().subscribe(success => {
+    this.getSpendings().subscribe(spends => {
       this.chartData = [];
       this.categories.forEach((category, index) => {
         this.chartData[index] = 0;
-        let a = success.filter((val) => val.category === category );
-        a.forEach(b => {
-          if (b.sum < 0) {
-            console.log(b.sum);
-            this.chartData[index] += Math.abs(b.sum);
+        const filteredSpends = spends.filter((val) => val.category === category );
+        filteredSpends.forEach(spend => {
+          if (spend.sum < 0) {
+            console.log(spend.sum);
+            this.chartData[index] += Math.abs(spend.sum);
           }
         });
-        console.log(this.chartData);
       });
     });
   }

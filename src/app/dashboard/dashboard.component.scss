@@ -1,11 +1,24 @@
 :host, mat-sidenav-container{
   height: 100%;
 }
+mat-toolbar{
+  position: fixed;
+  z-index: 10;
+}
 mat-sidenav{
   padding:.5rem 1rem;
 }
+
+.menu-btn{
+  background: none;
+  border: 0;
+  &:focus{
+    outline:none;
+  }
+}
+
 .wallet{
-  background-color: #ccb40e;
+  background-color: #fdd835;
   border-radius: 10px;
   margin-top: 1rem;
   padding: .5rem;
@@ -64,4 +77,11 @@ input{
   border: none;
   color: #fff;
   margin-left: 1rem;
+}
+
+@media screen and (max-width: 360px){
+  .greeting{
+    display: none;
+  }
+
 }

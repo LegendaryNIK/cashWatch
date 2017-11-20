@@ -7,6 +7,10 @@ import {WalletComponent} from "./wallet/wallet.component";
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'dashboard'
+  },
+  {
     path: 'login',
     component: AuthComponent
   },

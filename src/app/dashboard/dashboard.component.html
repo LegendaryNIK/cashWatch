@@ -2,12 +2,13 @@
   <mat-toolbar color="primary">
     <span class="fa fa-bars" (click)="sidenav.toggle()"></span>
     <span class="spacer"></span>
-    Hello, {{userName}}
+    <span class="greeting">Hello, {{userName}}</span>
     <button class="exit-btn" aria-label="Sign out" (click)="auth.logout()"><span class="fa fa-sign-out" aria-hidden="true"></span></button>
   </mat-toolbar>
   <mat-sidenav mode="side" #sidenav mode="push">
     <mat-nav-list>
-      <div class="wallet" *ngFor="let wallet of data.wallets | async">
+      <button class="menu-btn" (click)="sidenav.toggle()"><span class="fa fa-arrow-left"></span></button>
+      <div class="wallet" *ngFor="let wallet of data.wallets | async" color="accent">
         <a [routerLink]="[wallet.id]" (click)="sidenav.toggle()">
           <h1>{{wallet.name}}</h1>
           <h2>Balance: {{wallet.balance | currency:wallet.currency}}</h2>
