@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
-import {register} from "ts-node/dist";
+import { Router } from "@angular/router";
+import 'rxjs/add/operator/take'
 
 @Component({
   selector: 'app-auth',
@@ -10,10 +11,14 @@ import {register} from "ts-node/dist";
 
 export class AuthComponent implements OnInit {
 
-  constructor(public auth: AuthService) {
+  constructor(public auth: AuthService, private route: Router) {
   }
 
   ngOnInit() {
+    this.auth.user.take(1).subscribe(user => {
+      console.log(user);
+      if (user !== null) this.route.navigate(['dashboard']);
+    });
   }
 
 }

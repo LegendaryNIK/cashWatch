@@ -13,6 +13,8 @@ export class DashboardComponent implements OnInit {
 
   newWalletForm: FormGroup;
   userName: string;
+  hasWallets: boolean = false;
+  wallets: any;
 
   constructor(private data: UserDataService, public fb: FormBuilder, private auth: AuthService, private router: Router) { }
 
@@ -23,9 +25,15 @@ export class DashboardComponent implements OnInit {
       'currency': ['UAH', Validators.required]
     });
     this.auth.user.take(1).subscribe(success => this.userName = success.name);
-    this.data.wallets.take(1).subscribe(wallets => {
-      if (wallets[0]) {
-        this.router.navigate([`dashboard/${wallets[0].id}`] );
+    this.data.wallets.subscribe( success => {
+      this.wallets = success;
+      if (success.length === 0) {
+        this.hasWallets = false;
+        this.router.navigate(['/dashboard']);
+        console.log(this.router.url);
+      } else {
+        this.hasWallets = true;
+        if (this.router.url === '/dashboard') this.router.navigate([`dashboard/${success[0].id}`] );
       }
     });
   }
@@ -33,7 +41,7 @@ export class DashboardComponent implements OnInit {
   addNewWallet() {
     this.data.addWallet(this.newWalletForm.value)
       .then(ref => this.router.navigate([`dashboard/${ref.id}`]));
-    this.newWalletForm.reset();
+    this.newWalletForm.reset({currency: 'UAH'});
   }
 
 }

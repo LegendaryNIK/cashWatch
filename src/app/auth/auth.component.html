@@ -2,5 +2,8 @@
 <div class="modal">
   <h1>Hello there!</h1>
   <h2>This is a simple app that lets you to watch all your expenses and incomes</h2>
-    <button mat-raised-button (click)="auth.googleLogin()"> <i class="fa fa-google" aria-hidden="true"></i> Continue with Google</button>
+    <button class="social-sign" mat-raised-button aria-label="google login" (click)="auth.googleLogin()">
+      <i class="fa fa-google" aria-hidden="true"></i>
+      Continue with Google
+    </button>
 </div>

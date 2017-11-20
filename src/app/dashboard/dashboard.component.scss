@@ -1,3 +1,5 @@
+@import "~sass-mixins/mixins.scss";
+
 :host, mat-sidenav-container{
   height: 100%;
 }
@@ -17,17 +19,28 @@ mat-sidenav{
   }
 }
 
+.spacer{
+  flex: 1 1 auto;
+}
+
+.exit-btn{
+  background: none;
+  border: none;
+  color: #fff;
+  margin-left: 1rem;
+}
+
 .wallet{
   background-color: #fdd835;
-  border-radius: 10px;
-  margin-top: 1rem;
-  padding: .5rem;
   width: 14rem;
   height: 7rem;
   position: relative;
+  margin-top: 1rem;
+  padding: .5rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  @include x-border-radius(10px);
+  @include x-box-shadow(0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12));
   &:last-of-type{
     align-items: flex-start;
   }
@@ -37,6 +50,20 @@ mat-sidenav{
   h2{
     font-size: 15px;
     font-weight: 400;
+  }
+  input{
+    display: block;
+    border: 1px dashed #5c656f;
+    @include x-border-radius(5px);
+    margin-top: 5px;
+    background: none;
+    &[name='walletName']{
+      font-size:20px;
+      width: 100%;
+    }
+    &[name='walletBalance']{
+      font-size: 15px;
+    }
   }
 }
 
@@ -49,34 +76,25 @@ mat-sidenav{
   font-size: 1.5rem;
 }
 
-input{
-  display: block;
-  border: 1px dashed #5c656f;
-  border-radius: 5px;
-  margin-top: 5px;
-  background: none;
-  &[name='walletName']{
-    font-size:20px;
-    width: 100%;
-  }
-  &[name='walletBalance']{
-    font-size: 15px;
-  }
-}
-.currency-select, input[name='walletBalance']{
+.currency-select, .wallet input[name='walletBalance']{
   width: 45%;
   display: inline-block;
 }
 
-.spacer{
-  flex: 1 1 auto;
+.modal{
+  text-align: center;
+  margin-top: 50%;
+
 }
 
-.exit-btn{
-  background: none;
-  border: none;
-  color: #fff;
-  margin-left: 1rem;
+@media screen and (min-width: 361px) and (max-width: 720px){
+  .spacer{
+    display: none;
+  }
+  .greeting{
+    flex: 1 1 auto;
+    text-align: center;
+  }
 }
 
 @media screen and (max-width: 360px){

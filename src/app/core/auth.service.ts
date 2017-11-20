@@ -5,21 +5,16 @@ import { AngularFirestore, AngularFirestoreDocument } from "angularfire2/firesto
 import { Router } from "@angular/router";
 import * as firebase from "firebase/app";
 
+import { User } from '../interfaces/user.interface';
+
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/switchMap';
-
-interface User {
-  uid: string;
-  name: string;
-  wallets?: Array<any>;
-}
 
 @Injectable()
 export class AuthService {
 
   user: Observable<User>;
   uid: string;
-  wallets: Array<string>;
 
   constructor( private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {
     this.user = this.afAuth.authState
@@ -38,18 +33,14 @@ export class AuthService {
     return this.oAuthLogin(provider);
   }
 
-  /*emailLogin(credentials: any) {
-    console.log(credentials);
-    return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(test => {console.log(this.user); });
-  }*/
-
   private oAuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then(loginData => {
         console.log(loginData);
         this.updateUserData(loginData.user);
-        this.router.navigate(['/dashboard']);
+      })
+      .then(() => {
+        setTimeout(() => this.router.navigate(['/dashboard']),300);
       });
   }
 

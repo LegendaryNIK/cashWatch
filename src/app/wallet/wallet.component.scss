@@ -9,22 +9,24 @@
   }
 }
 
-.card{
-  margin: 1rem;
-  animation: init .5s ease-out 0s 1;
-  min-height: 10rem;
-  &:first-of-type{
-    align-self: flex-end;
-    align-items: center;
-    display: flex;
-  }
-}
 .cards-container{
   margin-top: 4rem;
   display: flex;
   flex-flow: row wrap;
   align-items: flex-start;
   justify-content: flex-start;
+}
+
+.card{
+  margin: 1rem;
+  animation: init .5s ease-out 0s 1;
+  min-height: 10rem;
+  &:first-of-type{
+    align-self: stretch;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .card-form{

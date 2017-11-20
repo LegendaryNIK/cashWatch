@@ -18,14 +18,11 @@ import { ChartsModule } from 'ng2-charts';
   exports: [
     ChartsModule,
     MatButtonModule,
-    MatIconModule,
     MatSidenavModule,
     MatToolbarModule,
     MatCardModule,
     MatListModule,
     MatSelectModule,
-    MatInputModule,
-    MatTableModule
   ]
 })
 export class UiComponentsModule {

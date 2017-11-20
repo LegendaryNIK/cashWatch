@@ -1,28 +1,19 @@
 import { Injectable } from '@angular/core';
-import {AuthService} from "../core/auth.service";
-import * as firebase from "firebase/app";
+import { AuthService} from "../core/auth.service";
+import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
+import { Wallet } from '../interfaces/wallet.interface';
+import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/take';
-import DocumentReference = firebase.firestore.DocumentReference;
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from "angularfire2/firestore";
-import {Observable} from "rxjs/Observable";
-
-interface Wallet {
-  name: string;
-  startBalance: number;
-  currency: string;
-}
 
 @Injectable()
 export class UserDataService {
-  user: any;
-  walletsCollection: any;
-  wallets: any;
-  categoryCollection: any;
+  walletsCollection: AngularFirestoreCollection<any>;
+  wallets: Observable<any>;
+  categoryCollection: Observable<any>;
 
   constructor(private auth: AuthService, private afs: AngularFirestore) {
     this.walletsCollection = this.afs.doc(`users/${this.auth.uid}`).collection('wallets');
     this.categoryCollection = this.afs.collection('categories').valueChanges();
-
     this.wallets = this.walletsCollection.snapshotChanges().map(wallet => {
       return wallet.map(w => {
         const data = w.payload.doc.data();
@@ -57,21 +48,20 @@ export class UserDataService {
     return this.walletsCollection.doc(id).update({balance: balance});
   }
 
-  getAllTransactions(id: string) {
-
-  }
-
   queryTransactions(id: string, params?: any) {
     let transCollection;
     const ref = this.walletsCollection.doc(id);
-    if (params && params.isIncome) {
-      transCollection = ref.collection('transactions', trans => trans.where('isIncome', '==', params.isIncome));
+    if (params && Object.keys(params)[0] === 'isIncome') {
+      transCollection = ref
+        .collection('transactions', trans => trans.where('isIncome', '==', params.isIncome));
     }
-    else if (params && params.category) {
-      transCollection = ref.collection('transactions', trans => trans.where('category', '==', params.category));
+    else if (params && Object.keys(params)[0] === 'category') {
+      transCollection = ref
+        .collection('transactions', trans => trans.where('category', '==', params.category));
     }
     else {
-      transCollection = ref.collection('transactions', trans => trans.orderBy('dateTime', 'desc'));
+      transCollection = ref
+        .collection('transactions', trans => trans.orderBy('dateTime', 'desc'));
     }
     console.log(transCollection);
     return transCollection.valueChanges();

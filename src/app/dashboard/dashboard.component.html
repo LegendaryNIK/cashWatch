@@ -8,7 +8,7 @@
   <mat-sidenav mode="side" #sidenav mode="push">
     <mat-nav-list>
       <button class="menu-btn" (click)="sidenav.toggle()"><span class="fa fa-arrow-left"></span></button>
-      <div class="wallet" *ngFor="let wallet of data.wallets | async" color="accent">
+      <div class="wallet" *ngFor="let wallet of wallets" color="accent">
         <a [routerLink]="[wallet.id]" (click)="sidenav.toggle()">
           <h1>{{wallet.name}}</h1>
           <h2>Balance: {{wallet.balance | currency:wallet.currency}}</h2>
@@ -29,6 +29,13 @@
       </div>
     </mat-nav-list>
   </mat-sidenav>
-  <router-outlet></router-outlet>
+  <router-outlet *ngIf="hasWallets; else welcomeBlock"></router-outlet>
+  <ng-template #welcomeBlock>
+    <div class="modal">
+      <h1>Whoops</h1>
+      <p>It looks like you don't have any wallets</p>
+      <button mat-raised-button color="primary" (click)="sidenav.toggle()">Let's create one!</button>
+    </div>
+  </ng-template>
 </mat-sidenav-container>
 

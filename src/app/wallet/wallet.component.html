@@ -3,13 +3,6 @@
   <mat-card class="card col-md-5 col-xs-12">
     <mat-card-title>{{wallet.name}} balance: {{wallet.balance | currency:wallet.currency}}</mat-card-title>
   </mat-card>
-  <mat-card class="card col-md-5 col-xs-12" *ngIf='history.length'>
-  <canvas baseChart
-          [data]="chartData"
-          [labels]="categories"
-          [chartType]="'doughnut'"
-  ></canvas>
-</mat-card>
   <mat-card class="card col-md-5 col-xs-12">
     <mat-card-title>Add new transaction</mat-card-title>
     <form class="card-form"[formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(wallet.balance);">
@@ -23,10 +16,18 @@
         <mat-option value="">Category</mat-option>
         <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
       </mat-select>
-      <button type="submit" [disabled]="!transactionForm.valid">Add transaction</button>
+      <button type="submit" mat-raised-button [disabled]="!transactionForm.valid">Add transaction</button>
     </form>
   </mat-card>
-  <mat-card class="card col-md-5 col-xs-12">
+  <mat-card class="card col-md-5 col-xs-12" *ngIf='chartData.length'>
+    <mat-card-title>Your expenses stats</mat-card-title>
+    <canvas baseChart #chart
+            [data]="chartData"
+            [labels]="chartLabels"
+            [chartType]="'doughnut'"
+    ></canvas>
+</mat-card>
+  <mat-card class="card col-md-5 col-xs-12" *ngIf="history.length">
     <mat-card-title>Your recent transactions</mat-card-title>
     <table class="card-table" cellspacing="0">
       <tr>
