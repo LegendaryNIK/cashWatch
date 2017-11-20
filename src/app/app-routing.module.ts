@@ -8,7 +8,8 @@ import {WalletComponent} from "./wallet/wallet.component";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard'
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
   },
   {
     path: 'login',
